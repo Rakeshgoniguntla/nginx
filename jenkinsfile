@@ -1,7 +1,7 @@
 pipeline {
     agent {label 'docker'}
     environment {
-    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-Credentials')
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-rakesh')
     }
     stages { 
         stage('SCM Checkout') {
