@@ -14,8 +14,8 @@ pipeline {
         }
         stage('login to dockerhub') {
             steps{
-                withCredentials([usernameColonPassword(credentialsId: 'dockerhub-rakesh', variable: 'dockerpassword')]) {
-                sh "docker login -u username --password-stdin ${dockerpassword}"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-rakesh', passwordVariable: 'passwd', usernameVariable: 'user')]) {
+                sh "docker login -u ${user} -p ${passwd}"
                    }
             }
         }
@@ -26,7 +26,7 @@ pipeline {
         }
         stage('build container') {
             steps{
-                sh 'docker run -d -p 10002:80 rakeshgoniguntla/nginx:$BUILD_NUMBER'
+                sh 'docker run -d -p 10004:80 rakeshgoniguntla/nginx:$BUILD_NUMBER'
             }
         }
     }        
