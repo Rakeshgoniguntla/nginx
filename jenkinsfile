@@ -27,7 +27,7 @@ pipeline {
         }
         stage('build container') {
             steps{
-                sh 'docker run -d -p 10000:80 rakeshgoniguntla/nginx:$BUILD_NUMBER'
+                sh 'docker run -d -p 10010:80 rakeshgoniguntla/nginx:$BUILD_NUMBER'
             }
         }
     }        
