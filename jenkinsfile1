@@ -1,8 +1,5 @@
 pipeline {
     agent {label 'docker'}
-    environment {
-    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-Credentials')
-    }
     stages { 
         stage('SCM Checkout') {
             steps{
@@ -17,8 +14,8 @@ pipeline {
         }
         stage('login to dockerhub') {
             steps{
-                withCredentials([usernamePassword(credentialsId: 'docker-hub-rakesh', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
-                sh "docker login -u username -p ${PASSWORD}"
+                withCredentials([usernamePassword(credentialsId: 'Dockerhub-Credentials', passwordVariable: 'dockerpasswd', usernameVariable: 'user')]) {
+                sh "docker login -u username -p ${dockerpasswd}"
                    }
             }
         }
