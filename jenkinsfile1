@@ -1,0 +1,36 @@
+pipeline {
+    agent {label 'docker'}
+    environment {
+    DOCKERHUB_CREDENTIALS = credentials('Dockerhub-Credentials')
+    }
+    stages { 
+        stage('SCM Checkout') {
+            steps{
+            git branch: 'main', url: 'https://github.com/Rakeshgoniguntla/nginx.git'
+            }
+        }
+
+        stage('Build docker image') {
+            steps {  
+                sh 'docker build -t rakeshgoniguntla/nginx:$BUILD_NUMBER .'
+            }
+        }
+        stage('login to dockerhub') {
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'Dockerhub-Credentials', passwordVariable: 'PASSWORD', usernameVariable: 'USER')]) {
+                sh "docker login -u username -p ${PASSWORD}"
+                }
+            }
+        }
+        stage('push image') {
+            steps{
+                sh 'docker push rakeshgoniguntla/nginx:$BUILD_NUMBER'
+            }
+        }
+        stage('build container') {
+            steps{
+                sh 'docker run -d -p 10001:80 rakeshgoniguntla/nginx:$BUILD_NUMBER'
+            }
+        }
+    }        
+}
